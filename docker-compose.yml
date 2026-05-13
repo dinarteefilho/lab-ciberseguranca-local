@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # uma aplicação vulnerável para os testes
+  dvwa:
+    image: vulnerables/web-dvwa
+    container_name: lab_dvwa
+    ports:
+      - "8080:80"
+    networks:
+      - lab_network
+    restart: always
+
+  # banco de dados do zabbix
+  zabbix-db:
+    image: mysql:8.0
+    container_name: zabbix_db
+    environment:
+      - MYSQL_DATABASE=zabbix
+      - MYSQL_USER=zabbix
+      - MYSQL_PASSWORD=zabbix_pwd
+      - MYSQL_ROOT_PASSWORD=root_pwd
+    networks:
+      - lab_network
+
+  # servidor do zabbix
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:latest
+    container_name: zabbix_server
+    environment:
+      - DB_SERVER_HOST=zabbix-db
+      - MYSQL_DATABASE=zabbix
+      - MYSQL_USER=zabbix
+      - MYSQL_PASSWORD=zabbix_pwd
+    ports:
+      - "10051:10051"
+    depends_on:
+      - zabbix-db
+    networks:
+      - lab_network
+
+  # interface do monitoramento com o zabbix
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:latest
+    container_name: zabbix_web
+    environment:
+      - ZBX_SERVER_HOST=zabbix-server
+      - DB_SERVER_HOST=zabbix-db
+      - MYSQL_DATABASE=zabbix
+      - MYSQL_USER=zabbix
+      - MYSQL_PASSWORD=zabbix_pwd
+    ports:
+      - "8081:8080"
+    depends_on:
+      - zabbix-server
+    networks:
+      - lab_network
+
+networks:
+  lab_network:
+    driver: bridge
