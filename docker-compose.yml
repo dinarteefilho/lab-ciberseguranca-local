@@ -13,7 +13,7 @@ services:
 
   # banco de dados do zabbix
   zabbix-db:
-    image: mysql:8.0
+    image: mariadb:latest
     container_name: zabbix_db
     environment:
       - MYSQL_DATABASE=zabbix
