@@ -28,3 +28,21 @@ docker-compose up -d
 \`\`\`
 *   A aplicação DVWA estará disponível em: `http://localhost:8080`
 *   O painel do Zabbix estará disponível em: `http://localhost:8081`
+
+## Evidências de Execução
+
+### Exploração de Command Injection (Red Team)
+Demonstração da vulnerabilidade sendo explorada para listar arquivos do sistema operacional:
+![Exploração de Falha](docs/img/evidencia_ataque_dvwa.png)
+
+### Monitoramento de Disponibilidade (Blue Team)
+Gráfico de tempo de resposta no Zabbix indicando a saúde do serviço durante as simulações:
+![Monitoramento Web Zabbix](docs/img/monitoramento_pico_zabbix.png)
+
+---
+
+## Autoria e Licença
+
+**Desenvolvido por Dinarte Filho** *Graduando em Tecnologia da Informação - UFERSA*
+
+© 2026 Dinarte Filho. Todos os direitos reservados.
